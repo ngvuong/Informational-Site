@@ -1,10 +1,11 @@
 const http = require('http');
 const fs = require('fs');
+const path = require('path');
 
 const server = http.createServer((req, res) => {
-  const path = req.url;
+  const pathName = req.url;
   let file = '';
-  switch (path) {
+  switch (pathName) {
     case '/':
       file = 'index.html';
       break;
@@ -14,13 +15,31 @@ const server = http.createServer((req, res) => {
     case '/contact':
       file = 'contact.html';
       break;
+    case '/styles.css':
+      file = 'styles.css';
+      break;
     default:
       file = '404.html';
       break;
   }
-  fs.readFile(file, 'utf8', (err, data) => {
-    if (err) throw err;
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+  const extName = path.extname(pathName);
+
+  let contentType = 'text/html';
+  console.log(extName);
+  if (extName === '.css') {
+    contentType = 'text/css';
+  }
+
+  fs.readFile(file, 'utf-8', (err, data) => {
+    if (err) {
+      fs.readFile('404.html', (err, data) => {
+        if (err) throw err;
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end(data);
+      });
+    }
+    console.log(data);
+    res.writeHead(200, { 'Content-Type': contentType });
     res.end(data);
   });
 });
