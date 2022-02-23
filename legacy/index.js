@@ -25,7 +25,6 @@ const server = http.createServer((req, res) => {
   const extName = path.extname(pathName);
 
   let contentType = 'text/html';
-  console.log(extName);
   if (extName === '.css') {
     contentType = 'text/css';
   }
@@ -38,7 +37,6 @@ const server = http.createServer((req, res) => {
         res.end(data);
       });
     }
-    console.log(data);
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(data);
   });

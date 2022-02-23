@@ -1,2 +1,3 @@
 # Informational-Site
-A simple information site
+
+A simple informational site using node, express, and ejs.
